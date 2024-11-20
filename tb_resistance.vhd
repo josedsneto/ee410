@@ -12,20 +12,24 @@ architecture bhv of tb_resistance is
 	end component;
 
 terminal t1: electrical;
-quantity temp : real;
+quantity temp1 : real;
 quantity V across I through t1;
 quantity R : real;
 
-signal temp_pulse: real;
+signal pulse: real := 0.0;
+signal const: real;
+--quantity Vin: real;
+
 
 begin
 	
 	process
 	begin
-		v_const <= 1.0;
-		temp_pulse <= 27.0;
+		pulse <= 100.0;
+		-- temperature = 27
 		wait for 10ns;
-		temp_pulse  <= 28.0;
+		--  temperature = 28
+		pulse  <= 200.0;
 		wait for 10ns;
 	end process;
 
@@ -33,10 +37,11 @@ begin
 	dut: resistance
 	port map(t1 => t1,
 			 t2 => electrical_ref,
-			 temp => temp);
+			 temp => temp1);
 			 
 	V == R*I;
-	V == v_const'ramp(0.0, 0.0);    	-- tension constante egale a 1
-	temp == temp_pulse'ramp(0.0, 0.0);
+	V == 10.0;
+	--pulse <=0.0, 20.0 after 10ms, 40.0 after 20ms, 0.0 after 30ms, 20.0 after 50ms, 40.0 after 70ms, 0.0 after 90ms;
+	temp1 == pulse'ramp(0.0);
 	
 end architecture;
